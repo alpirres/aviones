@@ -21,7 +21,7 @@ public class Flight{
     private int time;
     public AirCompany company;
     public static ArrayList<Flight> nFlight= new ArrayList<Flight>();
-    public Client[][] asientos=new Client[this.airplane.rows][this.airplane.colums];
+    public Client[][] asientos;
     public static ArrayList<String> nTickets=new ArrayList<String>();
     
 
@@ -37,6 +37,7 @@ public class Flight{
         this.baseprice=baseprice;
         this.time=time;
         this.company=company;
+        this.asientos= new Client[this.airplane.rows][this.airplane.colums];
         this.mycrew=new Crew[(int)Math.ceil((this.airplane.passengercapasity)*0.2)];
         
     }
@@ -105,7 +106,7 @@ public class Flight{
     *  Funcion priceTicket que calcula el precio de los asientos vacios y añade la posicion en la que se encuentra
     */
     public Hashtable priceTicket(){
-        int contador=1;
+        Integer contador=1;
         char letra='x';
         Hashtable<Integer,String> listClient=new Hashtable<Integer,String>();
         for(int i=0;i<this.asientos.length;i++){
