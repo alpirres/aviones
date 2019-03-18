@@ -7,7 +7,6 @@ public interface IPilot {
 	int PERASSIGNEDFLIGHT_DEF=5000;
 	static int num=1;
 
-    String createid();
 	void addFlight(Flight newAssignedFlight);
 	int getFlightHours();
 	void setFlightHours(int flightHours);
@@ -16,7 +15,7 @@ public interface IPilot {
     int getPerAssignedFlight();
     void setPerAssignedFlight(int perAssignedFlight);
     
-	double totalSalary();
+	double calculatetotalSalary();
    	int calculateFlightHours();
     
     @Override

@@ -1,5 +1,4 @@
 package interfaces;
-import java.util.Calendar;
 
 public interface IEmployee {
     
@@ -9,15 +8,15 @@ public interface IEmployee {
     void setName(String name);
     String getSurname();
     void setSurname(String surname);
-    Calendar getBirthDate();
-    void setBirthDate(Calendar birthDate);
+    String getBirthDate();
+    void setBirthDate(String birthDate);
     String getNationality();
     void setNationality(String nationality);
     String getLenguages();
     void setLenguages(String lenguages);
 
-	String calculatesLetter();
-	boolean validDNI();
+	String calculatesLetter(String dni);
+	boolean validDNI(String dni);
     
     @Override
     String toString();

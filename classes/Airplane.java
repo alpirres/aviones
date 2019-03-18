@@ -1,27 +1,25 @@
 package classes;
-import classes.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 /**
 *  Nombre: Airport
 *  Descripcion: Instanciasion de Avion
 *  @author Miguel Angel Perez
-*  @version 1.0.0
+*  @version 1.1
 */
-public class Airplane{
-      protected String enrollment;
-      protected Calendar acquisitionDate;
+abstract public class Airplane{
+      protected String acquisitionDate;
       protected double price;
       protected int autonomy;
       protected int passengercapasity;
       protected double intake;
       protected int rows;
       protected int colums;
+      public String enrollment;
+      public static AirCompany company;
       public ArrayList<Airplane> nairplane = new ArrayList<Airplane>();
 
-      public Airplane (String enrollment, double price,int autonomy, int passengercapasity,
-                      double intake, String acquisitionDate,  int rows, int colums){ 
-          this.enrollment=enrollment;
+      public Airplane(double price,int autonomy, int passengercapasity,
+                      double intake, String acquisitionDate,  int rows, int colums, AirCompany company){ 
           this.acquisitionDate=acquisitionDate;
           this.price=price;
           this.autonomy=autonomy;
@@ -29,15 +27,12 @@ public class Airplane{
           this.intake=intake;
           this.rows=rows;
           this.colums=colums;
+          this.company=company;
+          this.enrollment=CreateEnrollment();
       }
 
       //Getter
-      public String getEnrollment(){
-          return enrollment;
-      }
-      public Calendar getAcquisitionDate(){
-          return acquisitionDate;
-      }
+      
       public double getPrice(){
           return price;
       }
@@ -51,12 +46,7 @@ public class Airplane{
           return intake;
       }
       //Setter
-      public void setEnrollment(String enrollment){
-          this.enrollment=enrollment;
-      }
-      public void setAcquisitiondate(Calendar acquisitionDate){
-          this.acquisitionDate=acquisitionDate;
-      }
+    
       public void setPrice(double price){
           this.price=price;
       }
@@ -69,10 +59,11 @@ public class Airplane{
       public void setIntake(double intake){
           this.intake=intake;
       }
-
+      abstract public void addvehicle(String newvehicles);
+      abstract public String CreateEnrollment();
     @Override
     public String toString(){
-        return "Matricula "+this.getEnrollment()+" fecha de adquisicion "+this.getAcquisitionDate()+
+        return "Fecha de adquisicion "+this.acquisitionDate+
         " precio "+this.getPrice()+" autonomia "+this.getAutonomy()+" capasidad "+this.getPassengercapasity()+
         " consumo "+this.getIntake();
     }

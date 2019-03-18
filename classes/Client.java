@@ -1,6 +1,4 @@
 package classes;
-import classes.*;
-import java.util.Calendar;
 import java.util.ArrayList;
 /**
 *  Nombre: Client
@@ -14,7 +12,6 @@ public class Client{
     private String surname;
     private String nationality;
     private String birthdate;
-    public static ArrayList<Client> nClients=new ArrayList<Client>();
     
     
     public Client(String dni, String name, String surname, String nationality, String birthdate)throws Exception{
@@ -32,7 +29,7 @@ public class Client{
     *  @param recibe un String dni 
     *  @return devuelve un booleano valido 
     */
-    protected boolean validaDNI(String dni){
+    protected boolean validaDNI(String dni) throws Exception{
         boolean valido=false;
         int miDNI = Integer.parseInt(dni.substring(0,8));
         int resto = 0;
@@ -85,10 +82,10 @@ public class Client{
     public void setNationality(String nationality){
         this.nationality=nationality;
     } 
-    public Calendar getBirthdate(){
+    public String getBirthdate(){
         return this.birthdate;
     }
-    public void setBirthdate(Calendar birthdate){
+    public void setBirthdate(String birthdate){
         this.birthdate=birthdate;
     } 
 } 

@@ -1,6 +1,5 @@
 package classes;
 import interfaces.IEmployee;
-import java.util.Calendar;
 import java.util.ArrayList;
 /**
 *	Clase Empleado que implementa IAirCompany
@@ -16,19 +15,21 @@ import java.util.ArrayList;
     protected String idemployee;
 	protected String name;
 	protected String surname;
-	protected Calendar birthDate;
+	protected String birthDate;
 	protected String nationality;
 	protected String lenguages;
+     public static AirCompany company;
 
 	//Constructor de la clase Empleado
-	public Employee(String dni,String name,String surname,Calendar birthDate,String nationality,String lenguages,String idemployee)throws Exception{
-		this.setDNI(dni);
+	public Employee(String dni,String name,String surname,String birthDate,String nationality,String lenguages,String idemployee,AirCompany company)throws Exception{
+		setDNI(dni);
 		this.name=name;
 		this.surname=surname;
         this.idemployee=idemployee;
 		this.birthDate=birthDate;
 		this.nationality=nationality;
 		this.lenguages=lenguages;
+        this.company=company;
 
 	}
     // set de DNI que llama validDNI
@@ -67,11 +68,11 @@ import java.util.ArrayList;
         this.surname = surname;
     }
 
-    public Calendar getBirthDate() {
+    public String getBirthDate() {
         return this.birthDate;
     }
 
-    public void setBirthDate(Calendar birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -120,13 +121,12 @@ import java.util.ArrayList;
 
         return miLetra;
     }
+     
+     abstract public double calculatetotalSalary();
+     
     @Override
     public String toString(){
         return "Su nombre es "+this.getName()+" "+this.getSurname()+ ", su fecha de nacimiento es "+this.getBirthDate()+ ", su nacionalidad es " +this.getNationality()+ " y habla "+this.getLenguages();
     }
 
 }
-
-        
-
-

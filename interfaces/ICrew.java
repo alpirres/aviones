@@ -2,11 +2,10 @@ package interfaces;
 import classes.*;
 public interface ICrew {
 
-   	double SALARY=40000;
-	double PERASSIGNEDFLIGHT=1000;
+   	int SALARY_DEF=40000;
+	int PERASSIGNEDFLIGHT_DEF=1000;
 	static int num=1;
-
-    String createid();
+    
 	void addFlight(Flight newAssignedFlight);
 	int getFlightHours();
 	void setFlightHours(int flightHours);
@@ -15,7 +14,7 @@ public interface ICrew {
     int getPerAssignedFlight();
     void setPerAssignedFlight(int perAssignedFlight);
     
-	double totalSalary();
+	double calculatetotalSalary();
    	int calculateFlightHours();
     
     @Override

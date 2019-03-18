@@ -1,6 +1,7 @@
 package classes;
-import classes.*;
 import interfaces.IAirCompany;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Calendar;
 /**
 *	Nombre: AirCompany
@@ -14,13 +15,20 @@ public class AirCompany implements IAirCompany{
 	protected String name;
 	protected char[] code=new char[3];
 	protected String ceo;
-	protected Calendar fundationDate;
+	protected String fundationDate;
+    protected Airplane planes;
+    protected Employee empleados;
+    protected Flight vuelos;
+    public ArrayList<Client> nClients=new ArrayList<Client>();
+    
 
-
-	public AirCompany(String name,String ceo,String fundationDate){
+	public AirCompany(String name,String ceo,String fundationDate,Airplane aviones,Employee nEmployee,Flight nFlight){
 		this.name=name;
 		this.ceo=ceo;
 		this.fundationDate=fundationDate;
+        this.empleados=nEmployee;
+        this.planes=aviones;
+        this.vuelos=nFlight;
         createCode(name);
 	}
     /**
@@ -28,9 +36,9 @@ public class AirCompany implements IAirCompany{
     *  @param String name que es el nombre de la compañia
     */
     public void createCode(String name){
-        for(int i=0;i<this.code.lenght;i++){
-            char letra=name.charAt(i).toUpercase();
-            this.code[i]=letra;
+        for(int i=0;i<this.code.length;i++){
+            char letra=name.charAt(i);
+            this.code[i]=Character.toUpperCase(letra);
         }
     }
 
@@ -43,14 +51,6 @@ public class AirCompany implements IAirCompany{
         this.name = name;
     }
 
-   	public char getCode() {
-        return this.code;
-    }
-
-    public void setCode(char code) {
-        this.code = code;
-    }
-
     public String getCeo() {
         return this.ceo;
     }
@@ -59,13 +59,6 @@ public class AirCompany implements IAirCompany{
         this.ceo = ceo;
     }
 
-	public Calendar getFundationDate() {
-        return this.fundationDate;
-    }
-
-    public void setFundationDate(Calendar fundationDate) {
-        this.fundationDate = fundationDate;
-    }
     /**
     *  Función hireEmployee que añade un nuevo empleado al arraylist
     *  @param Employee newemployee que sirve para encontrar uno que coincida
@@ -73,9 +66,9 @@ public class AirCompany implements IAirCompany{
     */
     public boolean hireEmployee(Employee newemployee){
 		boolean hire=false;
-		for(int i=0;i<nEmployee.size()&&!hire;i++){
-			if(!this.nEmployee.get(i).equals(newemployee)){
-				this.nEmployee.add(newemployee);
+		for(int i=0;i<this.empleados.nEmployee.size()&&!hire;i++){
+			if(!this.empleados.nEmployee.get(i).equals(newemployee)){
+				this.empleados.nEmployee.add(newemployee);
 				hire=true;
 			}
 		}
@@ -88,20 +81,20 @@ public class AirCompany implements IAirCompany{
     */
 	public boolean fireEmployee(String dni){
 		boolean fire=false;
-		for(int i=0;i<nEmployee.size()&&!fire;i++){
-			if(this.nEmployee.get(i).dni!=null){
-				if(this.nEmployee.get(i).dni.equals(dni)){
-                    this.nEmployee.remove();
-					fire=true;
-				}
-			}
+        Iterator<Employee> nombreIterator = this.empleados.nEmployee.iterator();
+        while(nombreIterator.hasNext()&&!fire){
+            Employee elemento = nombreIterator.next();
+	       if(elemento.dni.equals(dni)){
+		      nombreIterator.remove();
+              fire=true; 
+           }
 		}
 		return fire;
 	}
 	// Metodo listEmployee que se encarga de listar todos los empleados
 	public void listEmployee(){
-			for(int i=0;i<nEmployee.size();i++) {
-  			System.out.println(nEmployee.get(i));
+			for(int i=0;i<this.empleados.nEmployee.size();i++) {
+  			System.out.println(this.empleados.nEmployee.get(i));
 		}
 	}
     /**
@@ -111,23 +104,21 @@ public class AirCompany implements IAirCompany{
     */
     public boolean searchEmployee(String idemployee){
 		boolean search=false;
-		for(int i=0;i<nEmployee.size()&&!search;i++) {
-			if(this.nEmployee.get(i).idemployee.equals(idemployee)){
-                System.out.println(this.nEmployee.get(i));
+		for(int i=0;i<this.empleados.nEmployee.size()&&!search;i++) {
+			if(this.empleados.nEmployee.get(i).idemployee.equals(idemployee)){
+                System.out.println(this.empleados.nEmployee.get(i));
                 search=true;
 			}
 		}
 		return search;
 	}
 	// Metodo totalSalary que nos mostrara el salario de cada empleado
-	public double totalSalary(String dni){
+	public void totalSalary(){
 		double allSalary;
-	   for(int i=0;i<nEmployee.size()&&!fire;i++){
-           if(this.nEmployee[i].dni.equals(dni)){
-				allSalary=nEmployee.get(i).totalSalary();
-			}
+	   for(int i=0;i<this.empleados.nEmployee.size();i++){
+           allSalary=this.empleados.nEmployee.get(i).calculatetotalSalary();
+           System.out.println(this.empleados.nEmployee.get(i).name+" cobra "+allSalary);
 		}
-		return allSalary;
 	}
     /**
     *  Función addPlane que añade un nuevo avion al arraylist
@@ -136,9 +127,9 @@ public class AirCompany implements IAirCompany{
     */
     public boolean addPlane(Airplane newairplane){
         boolean add=false;
-        for(int i=0;i<this.nairplane.size()&&!add;i++){
-            if(this.nairplane.get(i).equals(newairplane)){
-                this.nairplane.add(newairplane);
+        for(int i=0;i<this.planes.nairplane.size()&&!add;i++){
+            if(this.planes.nairplane.get(i).equals(newairplane)){
+                this.planes.nairplane.add(newairplane);
                 add=true;
             }
         }
@@ -148,8 +139,8 @@ public class AirCompany implements IAirCompany{
     *  Funcion listPlane recorre la cantidad de aviones y los lista
     */
     public void listPlane(){
-        for(int i=0;i<this.nairplane.size();i++){
-            System.out.println(nairplane.get(i));
+        for(int i=0;i<this.planes.nairplane.size();i++){
+            System.out.println(this.planes.nairplane.get(i));
         }
     }
 
@@ -160,12 +151,14 @@ public class AirCompany implements IAirCompany{
     */
     public boolean removePlane(String enrollment){
         boolean remove=false;
-        for(int i=0;i<nairplane.size()&&!remove;i++){
-            if(this.nairplane.get(i).enrollment.equals(enrollment)){
-                this.nairplane.remove();
-                remove=true;
-            }
-        }
+        Iterator<Airplane> nombreIterator = this.planes.nairplane.iterator();
+        while(nombreIterator.hasNext()&&!remove){
+            Airplane elemento = nombreIterator.next();
+            if(elemento.enrollment.equals(enrollment)){
+                nombreIterator.remove();
+                remove=true; 
+           }
+		}
         return remove;
     }
     /**
@@ -175,9 +168,9 @@ public class AirCompany implements IAirCompany{
     */
     public boolean searchPlane(String enrollment){
         boolean find=false;
-        for(int i=0;i<nairplane.size()&&!find;i++) {
-            if(this.nairplane.get(i).enrollment.equals(enrollment)){
-                System.out.println(this.nairplane.get(i));
+        for(int i=0;i<this.planes.nairplane.size()&&!find;i++) {
+            if(this.planes.nairplane.get(i).enrollment.equals(enrollment)){
+                System.out.println(this.planes.nairplane.get(i));
                 find=true;
             }
         }
@@ -190,9 +183,9 @@ public class AirCompany implements IAirCompany{
     */
 	public boolean addFlight(Flight newflight){
         boolean add=false;
-        for(int i=0;i<this.nFlight.size()&&!add;i++){
-            if(this.nFlight.get(i).equals(newflight)){
-                this.nFlight.add(newflight);
+        for(int i=0;i<this.vuelos.nFlight.size()&&!add;i++){
+            if(this.vuelos.nFlight.get(i).equals(newflight)){
+                this.vuelos.nFlight.add(newflight);
                 add=true;
             }
         }
@@ -203,8 +196,8 @@ public class AirCompany implements IAirCompany{
     *  @param String destino para listar todos los vuelos que se dirigen hacia este
     */
     public void listFlight(String destino){
-        for(int i=0;i<this.nFlight.size();i++){
-            System.out.println(this.nFlight.get(i));
+        for(int i=0;i<this.vuelos.nFlight.size();i++){
+            System.out.println(this.vuelos.nFlight.get(i));
         }
     }
     /**
@@ -214,9 +207,9 @@ public class AirCompany implements IAirCompany{
     */
     public boolean searchFlight(String id){
         boolean find=false;
-        for(int i=0;i<nFlight.size()&&!find;i++) {
-            if(this.nFlight.get(i).id.equals(id)){
-                System.out.println(this.nFlight.get(i));
+        for(int i=0;i<this.vuelos.nFlight.size()&&!find;i++) {
+            if(this.vuelos.nFlight.get(i).getID().equals(id)){
+                System.out.println(this.vuelos.nFlight.get(i));
                 find=true;
             }
         }
@@ -230,12 +223,15 @@ public class AirCompany implements IAirCompany{
     */
 	public boolean removeFlight(String id){
         boolean remove=false;
-        for(int i=0; i<this.nFlight.size()&&!remove;i++){
-            if(this.nFlight.get(i).id.equals(id)){
-                this.nFlight.remove();
-                remove=true;
-            }
-        }
+        Iterator<Flight> nombreIterator = this.vuelos.nFlight.iterator();
+        while(nombreIterator.hasNext()&&!remove){
+            Flight elemento = nombreIterator.next();
+            if(elemento.getID().equals(id)){
+                nombreIterator.remove();
+                remove=true; 
+           }
+		}
+        return remove;
     }
     /**
     *  Función buyTicket crea un nuevo ticket y añade al cliente que lo compra al asiento
@@ -244,9 +240,9 @@ public class AirCompany implements IAirCompany{
     */
 	public boolean buyTicket(String ticket){
         boolean bought=false;
-        for(int i=0; i<this.nTickets.size()&&bought;i++){
-            if(!this.nTickets.get(i).equals(tickets)){
-                this.nTickets.add(ticket);
+        for(int i=0; i<this.vuelos.nTickets.size()&&bought;i++){
+            if(!this.vuelos.nTickets.get(i).equals(ticket)){
+                this.vuelos.nTickets.add(ticket);
                 bought=true;
             }
         }
@@ -259,12 +255,14 @@ public class AirCompany implements IAirCompany{
     */
 	public boolean removeTicket(String idticket){
         boolean remove=false;
-        for(int i=0; i<this.nTickets.size()&&!remove;i++){
-            if(this.nTickets.get(i).equals(idticket)){
-                this.nTickets.remove();
-                remove=true;
-            }
-        }
+        Iterator<String> nombreIterator = this.vuelos.nTickets.iterator();
+        while(nombreIterator.hasNext()&&!remove){
+            String elemento = nombreIterator.next();
+            if(elemento.equals(idticket)){
+                nombreIterator.remove();
+                remove=true; 
+           }
+		}
         return remove;
     }
     /**
@@ -274,11 +272,9 @@ public class AirCompany implements IAirCompany{
     */
 	public boolean searchTicket(String idticket){
         boolean find=false;
-        int i=1;
-        for(int i=0;i<nTickets.size()&&!find;i++) {
-            if(this.nTickets.get(i).equals(idticket)){
-                System.out.println("Aqui tiene el ticket buscado "+this.nTickets.get(i));
-                i++;
+        for(int i=0;i<this.vuelos.nTickets.size()&&!find;i++) {
+            if(this.vuelos.nTickets.get(i).equals(idticket)){
+                System.out.println("Aqui tiene el ticket buscado "+this.vuelos.nTickets.get(i));
                 find=true;
             }
         }
@@ -315,7 +311,7 @@ public class AirCompany implements IAirCompany{
 	public boolean searchClient(String dni){
         boolean find=false;
         for(int i=0;i<nClients.size()&&!find;i++) {
-            if(this.nClients.get(i).dni.equals(dni)){
+            if(this.nClients.get(i).getDni().equals(dni)){
                 System.out.println(this.nClients.get(i));
                 find=true;
             }
@@ -329,12 +325,14 @@ public class AirCompany implements IAirCompany{
     */
 	public boolean removeClient(String dni){
         boolean remove=false;
-        for(int i=0; i<this.nTickets.size()&&!remove;i++){
-            if(this.nClients.get(i).dni.equals(dni)){
-                this.nClients.remove();
-                remove=true;
-            }
-        }
+        Iterator<Client> nombreIterator = this.nClients.iterator();
+        while(nombreIterator.hasNext()&&!remove){
+            Client elemento = nombreIterator.next();
+            if(elemento.getDni().equals(dni)){
+                nombreIterator.remove();
+                remove=true; 
+           }
+		}
         return remove;
     }
 }

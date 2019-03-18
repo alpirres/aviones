@@ -1,7 +1,9 @@
 package classes;
-import classes.AirCompany;
 import java.util.Scanner;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 /**
 *  Nombre: menu
 *  Descripcion: clase que contiene el menu que se mostrara por pantalla
@@ -13,6 +15,10 @@ public class Menu{
     Scanner entrada;
     /** Lista de las opciones del menú principal */
     List<String> menuprincipal;
+    
+    AirCompany company;
+    
+    Flight vuelo;
     
     
     private static Menu instance;
@@ -48,7 +54,8 @@ public class Menu{
      * Controla error en entrada y si la opción es válida para cada menú.
      * En caso de ser valida delega la gestión a los métodos gestionPrincipal
      */
-    public void imprimeMenu(AirCompany company){
+    public void imprimeMenu(AirCompany company, Flight v){
+        this.vuelo=v;
         List menu=this.menuprincipal; 
         System.out.println("\n-------------Menu Principal-------------\n");
         if(menu!=null){
@@ -61,18 +68,18 @@ public class Menu{
             }
             System.out.println("Elija el numero de la opcion correcta y pulse enter");
             try{
-                int opcion = entradaa.nextInt();
+                int opcion = entrada.nextInt();
                 if(opcion<=0||opcion>menuprincipal.size()){
                     System.out.println("Opcion no valida");
                     entrada.nextLine();
-                    this.imprimeMenu(company);
+                    this.imprimeMenu(company, this.vuelo);
                 }else{
                     this.gestionPrincipal(opcion, company);
                 } 
             }catch(Exception e){
                 entrada=new Scanner(System.in);
                 System.out.println("Elija un numero correcto");
-                imprimeMenu();
+                imprimeMenu(company, this.vuelo);
             }
         }
     }
@@ -80,32 +87,33 @@ public class Menu{
      * @param int o identifica la opcion elegida por el usuario en el menú principal.
      */
     private void gestionPrincipal(int o, AirCompany company){
+        this.company=company;
         switch (o) {
             case 1:
                 System.out.print("Porfavor introduzca el aeropuerto origen: ");
-                String origen=entrada.nextInt();
+                String origen=entrada.nextLine();
                 System.out.print("Porfavor introduzca el aeropuerto destino: ");
-                String destiny=entrada.nextInt();
-                this.createSubmenu(origen,destino);
+                String destiny=entrada.nextLine();
+                this.createSubmenu(origen,destiny);
                 break;
             case 2:
                 System.out.print("Porfavor introduzca el identificador del billete: ");
-                String id=entrada.nextInt();
+                String id=entrada.nextLine();
                 System.out.print("Porfavor introduzca su DNI: ");
-                String dni=entrada.nextInt();
+                String dni=entrada.nextLine();
                 company.searchTicket(id);
                 break;
             case 3:
                 System.out.print("Porfavor introduzca el identificador del billete: ");
-                String id=entrada.nextInt();
+                String id1=entrada.nextLine();
                 System.out.print("Porfavor introduzca su DNI: ");
-                String dni=entrada.nextInt();
-                company.removeTicket(id);
+                String dni1=entrada.nextLine();
+                company.removeTicket(id1);
                 break;
             case 4:
                 System.out.println("Intoduzca el destino de los vuelos que desea visualizar");
-                String destiny=entrada.nextInt();
-                company.listFlight(destiny);
+                String destino=entrada.nextLine();
+                company.listFlight(destino);
                 break;
             case 5:
                 System.out.println("Aquí tiene todos los emppleados contratados");
@@ -117,19 +125,16 @@ public class Menu{
                 break;
             case 7:
                 System.out.println("Aquí tiene todos los aviones disponibles");
-                company.listAirplane();
+                company.listPlane();
                 break;
             case 8:
                 System.out.println("Aquí tiene el sueldo total de cada empleado");
-                for(int i=0;i<nEmployee.size();i++){
-                    System.out.println("El empleado "+this.nEmployee.get(i).nombre+" y cobra"
-                                       +this.totalSalary(this.nEmployee.get(i)));
-                }
+                company.totalSalary();
                 break;
             case 9:
                 break;
             case 0:
-                System.out.printl("Gracias por visitarnos, hasta pronto.");
+                System.out.println("Gracias por visitarnos, hasta pronto.");
                 break;
             default:
                 System.out.println("opción incorrecta");
@@ -141,68 +146,74 @@ public class Menu{
     */
     public void createSubmenu(String origen, String destino){
         int contador=1;
-        Hashtable<int,Flight> idFLight=new Hashtable<int,Flight>();
-        Hashtable<int,String> listClient=new Hashtable<int,String>();
-        if(!origen.equalsIgnoreCase(destino)){
-            for(int i=0;i<this.nFlight.size();i++){
-                if(this.nFlight.get(i).aporigen.cityname.equals(origen)&&
-                   this.nFlight.get(i).apdestino.cityname.equals(destino)){
-                    idFlight.put(contador,this.nFlight.get(i));
-                    System.out.println(contador+") "+this.nFlight.get(i).ID);
+        Hashtable<Integer,Flight> idFlight=new Hashtable<Integer,Flight>();
+        Hashtable<Integer,String> listClient=new Hashtable<Integer,String>();
+        while(!origen.equalsIgnoreCase(destino)){
+            for(int i=0;i<this.vuelo.nFlight.size();i++){
+                if(this.vuelo.nFlight.get(i).getAporingen().cityname.equals(origen)&&
+                   this.vuelo.nFlight.get(i).getApdestino().cityname.equals(destino)){
+                    idFlight.put(contador,this.vuelo.nFlight.get(i));
+                    System.out.println(contador+") "+this.vuelo.nFlight.get(i).getID());
                     contador++;
                 }
             }
-        }
-        System.out.println("Seleccione el vuelo	deseado	o vuelva atrás (0).");
-        int id=entrada.nextInt();
-        while(id!=0&&id<=contador){
-            listClient=idFlight.get(id).priceTicket();
-            System.out.println("Seleccione el asiento deseado o vuelva atrás (0).");
-            int asiento=entrada.nextInt();
-            while(asiento!=0&&asiento<listClient.size()){
-                System.out.println("Introduzca su dni o vuelva atrás (0).");
-                String dni=entrada.nextInt();
-                if(dni!=0){
-                    boolean estoy=false;
-                    for(int i=0;i<this.nClients.size()&&!estoy;i++){
-                        if(!this.nClients.get(i).dni.equals(dni)){
-                            System.out.println("Usted no tiene cuenta");
-                            System.out.println("Desea crear una cuenta (s/n)");
-                            char respuesta=entrada.nextInt();
-                            if(respuesta.equalsIgnoreCase('s')){
-                                System.out.println("Introduzca su nombre: ");
-                                String nombre=entrada.nextInt();
-                                System.out.println("Introduzca su apellido: ");
-                                String apellido=entrada.nextInt();
-                                System.out.println("Introduzca su nacianalidad: ");
-                                String nacionalidad=entrada.nextInt();
-                                System.out.println("Introduzca su fecha de nacimiento: ");
-                                String nacimiento=entrada.nextInt();
-                                Client nuevo=new Client(dni,nombre,apellido,nacionalidad,nacimiento);
-                                nuevo.addClient(nuevo);
-                                String seat=listClient.get(asiento);
-                                String ticket=createTicket(seat);
-                                this.buyTicket(ticket);
-                                System.out.println("");
+            System.out.println("Seleccione el vuelo	deseado	o vuelva atrás (0).");
+            int id=entrada.nextInt();
+            while(id!=0&&id<=contador){
+                listClient=idFlight.get(id).priceTicket();
+                System.out.println("Seleccione el asiento deseado o vuelva atrás (0).");
+                int asiento=entrada.nextInt();
+                while(asiento!=0&&asiento<listClient.size()){
+                    System.out.println("Introduzca su dni o vuelva atrás (0).");
+                    String dnii=entrada.nextLine();
+                    if(dnii.equals("0")){
+                        boolean estoy=false;
+                        for(int i=0;i<company.nClients.size()&&!estoy;i++){
+                            if(!company.nClients.get(i).getDni().equals(dnii)){
+                                System.out.println("Usted no tiene cuenta");
+                                System.out.println("Desea crear una cuenta (s/n)");
+                                String respuesta=entrada.nextLine();
+                                if(respuesta.equalsIgnoreCase("s")){
+                                    System.out.println("Introduzca su nombre: ");
+                                    String nombre=entrada.nextLine();
+                                    System.out.println("Introduzca su apellido: ");
+                                    String apellido=entrada.nextLine();
+                                    System.out.println("Introduzca su nacianalidad: ");
+                                    String nacionalidad=entrada.nextLine();
+                                    System.out.println("Introduzca su fecha de nacimiento(yyyy/mm/dd): ");
+                                    String nacimiento=entrada.nextLine();
+                                    try{
+                                    Client nuevo=new Client(dnii,nombre,apellido,nacionalidad,nacimiento);
+                                    company.addClient(nuevo);
+                                    }catch(Exception e){
+                                        System.out.println(e);
+                                    }
+                                    String seat=listClient.get(asiento);
+                                    String ticket=this.vuelo.createTicket(seat);
+                                    company.buyTicket(ticket);
+                                    System.out.println("");
+                                }else{
+                                    System.out.println("pulse (0) para salir");
+                                    id=entrada.nextInt();
+                                }
                             }else{
-                                System.out.println("pulse (0) para salir");
-                                id=entrada.nextInt();
+                                System.out.println("Usted ya tiene cuenta");
+                                System.out.println("Desea comprar el billete (s/n)");
+                                String respues=entrada.nextLine();
+                                if(respues.equalsIgnoreCase("s")){
+                                    String seat=listClient.get(asiento);
+                                    String ticket=this.vuelo.createTicket(seat);
+                                    company.buyTicket(ticket);
+                                }else{
+                                    System.out.println("pulse (0) para salir");
+                                    id=entrada.nextInt();
+                                }
                             }
-                        }else{
-                            System.out.println("Usted ya tiene cuenta");
-                            System.out.println("Desea comprar el billete (s/n)");
-                            char respuesta=entrada.nextInt();
-                            if(respuesta.equalsIgnoreCase('s')){
-                                this.buyTicket();
-                            }else{
-                                System.out.println("pulse (0) para salir");
-                                id=entrada.nextInt();
-                            }
+                            estoy=true;dnii="0";asiento=0;destino=origen;
                         }
-                        estoy=true;dni=0;asiento=0;
                     }
                 }
             }
-        }r
-     
+        }
+    }
 }

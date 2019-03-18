@@ -1,7 +1,5 @@
 package classes;
-import classes.*;
 import java.lang.Math;
-import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.Hashtable;
 /**
@@ -17,18 +15,19 @@ public class Flight{
     private Airplane airplane;
     private Pilot[] mypilot;
     private Crew[] mycrew;
-    private Airport aporingen;
+    private Airport aporigen;
     private Airport apdestino;
     private int baseprice;
     private int time;
+    public AirCompany company;
     public static ArrayList<Flight> nFlight= new ArrayList<Flight>();
-    public Client[] asientos=new Client[this.airplane.rows][this.airplane.columns];
+    public Client[][] asientos=new Client[this.airplane.rows][this.airplane.colums];
     public static ArrayList<String> nTickets=new ArrayList<String>();
     
 
     
     //constructor de la clase Flight
-    public Flight(Airplane airplane, Airport aporingen, Airport apdestino,String date, int baseprice, int time){
+    public Flight(Airplane airplane, Airport aporingen, Airport apdestino,String date, int baseprice, int time, AirCompany company){
         this.ID=createID();
 //        this.date=date;
         this.airplane=airplane;
@@ -37,7 +36,8 @@ public class Flight{
         this.apdestino=apdestino;
         this.baseprice=baseprice;
         this.time=time;
-        this.mycrew=new Crew[Math.ceil((this.airplane.passengercapasity)*2/100)];
+        this.company=company;
+        this.mycrew=new Crew[(int)Math.ceil((this.airplane.passengercapasity)*0.2)];
         
     }
     
@@ -79,7 +79,7 @@ public class Flight{
     public void addClienteAsiento(Client newclient, int asiento){
         boolean added=true;
         for(int i=0; i<this.asientos.length&&added;i++){
-            for(int j=0;j<this.asientos[0].length&&added;j++){
+            for(int j=0;j<this.asientos[i].length&&added;j++){
                 if(this.asientos[i][j]==null){
                     this.asientos[i][j]=newclient;
                     added=false;
@@ -106,10 +106,10 @@ public class Flight{
     */
     public Hashtable priceTicket(){
         int contador=1;
-        Char letra;
-        Hashtable<int,String> listClient=new Hashtable<int,String>();
-        for(int i=0;i<this.asientos.lenght;i++){
-            for(int j=0;j<this.asientos[0].length&&added;j++){
+        char letra='x';
+        Hashtable<Integer,String> listClient=new Hashtable<Integer,String>();
+        for(int i=0;i<this.asientos.length;i++){
+            for(int j=0;j<this.asientos[0].length;j++){
                 if(this.asientos[i]==null){
                     switch(j){
                     case 0:
@@ -127,15 +127,15 @@ public class Flight{
                     }
                     if(this.airplane.intake==160){
                         if(i<10){
-                            System.out.println(contador+") "+((i+1)+letrta)+" "+(this.baseprice*0.2)+"€");
+                            System.out.println(contador+") "+((i+1)+letra)+" "+(this.baseprice*0.2)+"€");
                         }else{
-                            System.out.println(contador+") "+((i+1)+letrta)+" "+this.baseprice+"€");
+                            System.out.println(contador+") "+((i+1)+letra)+" "+this.baseprice+"€");
                         }
                     }else if(this.airplane.intake==140){
                         if(i<5){
-                            System.out.println(contador+") "+((i+1)+letrta)+" "+(this.baseprice*0.2)+"€");
+                            System.out.println(contador+") "+((i+1)+letra)+" "+(this.baseprice*0.2)+"€");
                         }else{
-                            System.out.println(contador+") "+((i+1)+letrta)+" "+this.baseprice+"€");
+                            System.out.println(contador+") "+((i+1)+letra)+" "+this.baseprice+"€");
                         }
                     }
                     String fin=i+""+letra;
@@ -155,14 +155,16 @@ public class Flight{
     */
     private String createID(){
         StringBuilder conjunto=new StringBuilder();
-        for(int i=0;i<this.code.length;i++){
-            conjunto.append(this.code[i]);
+        for(int i=0;i<company.code.length;i++){
+            conjunto.append(company.code[i]);
         }
-        int hours=this.date.get(Calendar.HOUR);
-        int minutes=this.date.get(Calendar.MINUTE);
-        conjunto.append(hours);
-        conjunto.append(minutes);
-        conjunto.apend(this.apdestino.getacronym);
+        int hours1=this.date.charAt(11);
+        int hours2=this.date.charAt(12);
+        int minutes1=this.date.charAt(14);
+        int minutes2=this.date.charAt(15);
+        conjunto.append(hours1+""+hours2);
+        conjunto.append(minutes1+""+minutes2);
+        conjunto.append(this.apdestino.getacronym());
         return conjunto.toString();
     }
     /**
@@ -170,8 +172,8 @@ public class Flight{
     *
     */
     @Override
-    public void toString(){
-        return "Este es el vuelo "+this.ID+" sale desde "+this.aporigen.cityname+", se direge hacia "+this.apdestino.cityname+", sale el día "+this.date+" a las "+this.date.get();                
+    public String toString(){
+        return "Este es el vuelo "+this.ID+" sale desde "+this.aporigen.cityname+", se direge hacia "+this.apdestino.cityname+", sale el día "+this.date;                
     }
     //getter y setter
     public String getID(){
@@ -181,15 +183,15 @@ public class Flight{
     public void setID(String ID){
         this.ID=ID;
     }
-    /*
-    public Calendar getDate(){
+    
+    public String getDate(){
         return this.date;
     }
     
-    public void setDate(Calendar date){
+    public void setDate(String date){
         this.date=date;
     }
-    */
+    
     public Airplane getAirplane(){
         return this.airplane;
     }

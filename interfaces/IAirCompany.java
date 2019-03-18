@@ -7,7 +7,7 @@ public interface IAirCompany{
 	boolean fireEmployee(String dni);
 	void listEmployee();
 	boolean searchEmployee(String idemploye);
-	int totalSalary(String dni);
+	void totalSalary();
     
 	
 	boolean addPlane(Airplane newairplane);
@@ -18,7 +18,7 @@ public interface IAirCompany{
     
 	boolean addFlight(Flight newflight);
 	boolean removeFlight(String id);
-	boolean buyTicket();
+	boolean buyTicket(String ticket);
 	boolean removeTicket(String idticket);
 	boolean searchTicket(String idticket);
 	boolean addClient(Client newclient);
