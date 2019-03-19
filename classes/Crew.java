@@ -16,21 +16,22 @@ public class Crew extends Employee implements ICrew{
 
     
 	//Constructor de la clase Crew(Tripulacion)
-	public Crew(String name,String surname,String birthDate,String nationality,String lenguages)throws Exception{
-		super(name,surname,birthDate,nationality,lenguages);
+	public Crew(String dni,String name,String surname,String birthDate,String nationality,String lenguages, AirCompany company)throws Exception{
+		super(dni,name,surname,birthDate,nationality,lenguages,company);
         this.salary=SALARY_DEF;
         this.perAssignedFlight=PERASSIGNEDFLIGHT_DEF;
+		this.idemployee=createid();
+		
 	}
 	// Metodo que se encarga de crear un id al empleado con la union del codigo de la compañia y un numero para cada empleado
 	public String createid(){
-		StringBuilder employee=new StringBuilder();
-        	for (int i=0; i<company.code.length; i++){
-				employee.append(company.code[i]);  
+		 StringBuilder employee=new StringBuilder();
+        	for (int i=0; i<company.code.length ; i++){
+           	employee.append(company.code[i]);  
        		}
-       	String nemployee= String.format("%03d",num);
-        num ++;
-		return employee.toString()+'C'+nemployee; 
-		
+       		String nemployee= String.format("%03d",num);
+        	num ++;
+        	return employee.toString()+'C'+nemployee;
 	}
 	// Metodo que añade vuelos al array list
 	public void addFlight(Flight newAssignedFlight){
@@ -69,7 +70,7 @@ public class Crew extends Employee implements ICrew{
     }
    
 	public String toString(){
-		return super.toString()+"dado que es tripulante su salario es de "+this.getSalary()+" y por vuelo asignado cobra"+this.getPerAssignedFlight();
+		return super.toString()+" dado que es tripulante su salario es de "+this.getSalary()+" y por vuelo asignado cobra"+this.getPerAssignedFlight();
     }
     
     /**

@@ -20,14 +20,13 @@ public class Flight{
     private int baseprice;
     private int time;
     public AirCompany company;
-    public static ArrayList<Flight> nFlight= new ArrayList<Flight>();
     public Client[][] asientos;
     public static ArrayList<String> nTickets=new ArrayList<String>();
     
 
     
     //constructor de la clase Flight
-    public Flight(Airplane airplane, Airport aporingen, Airport apdestino,String date, int baseprice, int time, AirCompany company)throws Exception{
+    public Flight(Airplane airplane, Airport aporingen, Airport apdestino,String date, int baseprice, int time, AirCompany company){
         this.date=date;
         this.airplane=airplane;
         this.mypilot=new Pilot[2];
@@ -38,12 +37,7 @@ public class Flight{
         this.company=company;
         this.asientos= new Client[this.airplane.rows][this.airplane.colums];
         this.mycrew=new Crew[(int)Math.ceil((this.airplane.passengercapasity)*0.2)];
-		
-		try{
-			this.ID=createID();
-		}catch(Exception e){
-			System.out.println(e);
-		}
+		this.ID=createID();
         
     }
     
@@ -52,13 +46,11 @@ public class Flight{
     *  @param recibe una variable de tipo Piloto
     */
     public void addPilot(Employee newpilot){
-        boolean added=false;
-        for(int i=0;i<this.mypilot.length&&!added;i++){
+        boolean added=true;
+        for(int i=0;i<this.mypilot.length&&added;i++){
             if(this.mypilot[i]==null){
                 this.mypilot[i]=(Pilot)newpilot;
-                added=true;
-            }else{
-                System.out.println("All the pilots are on board.");
+                added=false;
             }
         }
     }
@@ -68,13 +60,11 @@ public class Flight{
     *  @param recibe una variable de tipo Crew
     */
     public void addCrew(Employee newcrew){
-        boolean added=false;
-        for(int i=0;i<this.mycrew.length&&!added;i++){
+        boolean added=true;
+        for(int i=0;i<this.mycrew.length&&added;i++){
             if(this.mycrew[i]==null){
                 this.mycrew[i]=(Crew)newcrew;
-                added=true;
-            }else{
-                System.out.println("All the crew are on board.");
+                added=false;
             }
         }
     }
@@ -111,7 +101,7 @@ public class Flight{
     *  Funcion priceTicket que calcula el precio de los asientos vacios y añade la posicion en la que se encuentra
     */
     public Hashtable priceTicket(){
-        Integer contador=new Integer(1);
+        Integer contador=1;
         char letra='x';
         Hashtable<Integer,String> listClient=new Hashtable<Integer,String>();
         for(int i=0;i<this.asientos.length;i++){
@@ -159,7 +149,7 @@ public class Flight{
     *  y acronimo de la ciudad de destino
     *  @return devuelve un String conjunto el cual es el identificador ya formado
     */
-    private String createID()throws Exception{
+    private String createID(){
         StringBuilder conjunto=new StringBuilder();
         for(int i=0;i<company.code.length;i++){
             conjunto.append(company.code[i]);

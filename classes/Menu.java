@@ -12,11 +12,11 @@ import java.util.Iterator;
 */
 public class Menu{
     /** Entrada por teclado */
-    Scanner entrada;
+    public Scanner entrada;
     /** Lista de las opciones del menú principal */
-    List<String> menuprincipal;
+    public List<String> menuprincipal;
     
-    private AirCompany company;
+    public AirCompany company;
     
     Flight vuelo;
     
@@ -54,8 +54,7 @@ public class Menu{
      * Controla error en entrada y si la opción es válida para cada menú.
      * En caso de ser valida delega la gestión a los métodos gestionPrincipal
      */
-    public void imprimeMenu(AirCompany company, Flight v){
-        this.vuelo=v;
+    public void imprimeMenu(AirCompany company){
         List menu=this.menuprincipal; 
         System.out.println("\n-------------Menu Principal-------------\n");
         if(menu!=null){
@@ -72,14 +71,14 @@ public class Menu{
                 if(opcion<=0||opcion>menuprincipal.size()){
                     System.out.println("Opcion no valida");
                     entrada.nextLine();
-                    this.imprimeMenu(company, this.vuelo);
+                    this.imprimeMenu(company);
                 }else{
-					this.gestionPrincipal(opcion, company);
+                    this.gestionPrincipal(opcion, company);
                 } 
             }catch(Exception e){
                 entrada=new Scanner(System.in);
                 System.out.println("Elija un numero correcto");
-                imprimeMenu(company, this.vuelo);
+                imprimeMenu(company);
             }
         }
     }
@@ -92,7 +91,7 @@ public class Menu{
             case 1:
                 System.out.print("Porfavor introduzca el aeropuerto origen: ");
                 String origen=entrada.nextLine();
-				entrada.nextLine();
+				origen=entrada.nextLine();
                 System.out.print("Porfavor introduzca el aeropuerto destino: ");
                 String destiny=entrada.nextLine();
                 this.createSubmenu(origen,destiny);
@@ -119,9 +118,8 @@ public class Menu{
                 company.listFlight(destino);
                 break;
             case 5:
-                System.out.println("Aqui tiene todos los empleados contratados");
-                this.company.listEmployee();
-				System.out.println("no hace naaa");
+                System.out.println("Aqui tiene todos los emppleados contratados");
+                company.listEmployee();
                 break;
             case 6:
                 System.out.println("Aqui tiene todos los clientes registrados");
@@ -137,7 +135,7 @@ public class Menu{
                 break;
             case 9:
                 break;
-            case 0:
+            case 10:
                 System.out.println("Gracias por visitarnos, hasta pronto.");
                 break;
             default:
@@ -149,23 +147,22 @@ public class Menu{
     *  
     */
     public void createSubmenu(String origen, String destino){
-        Integer contador=new Integer(1);
+        int contador=1;
         Hashtable<Integer,Flight> idFlight=new Hashtable<Integer,Flight>();
         Hashtable<Integer,String> listClient=new Hashtable<Integer,String>();
         while(!origen.equalsIgnoreCase(destino)){
-            for(int i=0;i<this.vuelo.nFlight.size();i++){
-                if(this.vuelo.nFlight.get(i).getAporingen().cityname.equals(origen)&&
-                   this.vuelo.nFlight.get(i).getApdestino().cityname.equals(destino)){
-                    idFlight.put(contador,this.vuelo.nFlight.get(i));
-                    System.out.println(contador+") "+this.vuelo.nFlight.get(i).getID());
+            for(int i=0;i<company.nFlight.size();i++){
+                if(company.nFlight.get(i).getAporingen().cityname.equals(origen)&&
+                   company.nFlight.get(i).getApdestino().cityname.equals(destino)){
+                    idFlight.put(contador,company.nFlight.get(i));
+                    System.out.println(contador+") "+company.nFlight.get(i).getID());
                     contador++;
                 }
             }
-            System.out.println("Seleccione el vuelo deseado o vuelva atras (0)");
+            System.out.println("Seleccione el vuelo	deseado	o vuelva atrás (0).");
             int id=entrada.nextInt();
-			Integer idInteger = new Integer(id);
             while(id!=0&&id<=contador){
-                listClient=idFlight.get(idInteger).priceTicket();
+                listClient=idFlight.get(id).priceTicket();
                 System.out.println("Seleccione el asiento deseado o vuelva atrás (0).");
                 int asiento=entrada.nextInt();
                 while(asiento!=0&&asiento<listClient.size()){
@@ -194,7 +191,7 @@ public class Menu{
                                         System.out.println(e);
                                     }
                                     String seat=listClient.get(asiento);
-                                    String ticket=this.vuelo.createTicket(seat);
+                                    String ticket=idFlight.get(id).createTicket(seat);
                                     company.buyTicket(ticket);
                                     System.out.println("");
                                 }else{
@@ -207,7 +204,7 @@ public class Menu{
                                 String respues=entrada.nextLine();
                                 if(respues.equalsIgnoreCase("s")){
                                     String seat=listClient.get(asiento);
-                                    String ticket=this.vuelo.createTicket(seat);
+                                    String ticket=idFlight.get(id).createTicket(seat);
                                     company.buyTicket(ticket);
                                 }else{
                                     System.out.println("pulse (0) para salir");

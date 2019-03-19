@@ -15,8 +15,8 @@ public interface IEmployee {
     String getLenguages();
     void setLenguages(String lenguages);
 
-	//String calculatesLetter(String dni);
-	//boolean validDNI(String dni);
+	String calculatesLetter(String dni);
+	boolean validDNI(String dni);
     
     @Override
     String toString();

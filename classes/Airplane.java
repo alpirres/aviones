@@ -16,7 +16,7 @@ abstract public class Airplane{
       protected int colums;
       public String enrollment;
       public static AirCompany company;
-      public ArrayList<Airplane> nairplane = new ArrayList<Airplane>();
+      
 
       public Airplane(double price,int autonomy, int passengercapasity,
                       double intake, String acquisitionDate,  int rows, int colums, AirCompany company){ 
