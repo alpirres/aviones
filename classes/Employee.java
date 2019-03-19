@@ -18,22 +18,28 @@ import java.util.ArrayList;
 	protected String birthDate;
 	protected String nationality;
 	protected String lenguages;
-     public static AirCompany company;
+    public static AirCompany company;
 
 	//Constructor de la clase Empleado
-	public Employee(String dni,String name,String surname,String birthDate,String nationality,String lenguages,String idemployee,AirCompany company)throws Exception{
-		setDNI(dni);
+	public Employee(String name,String surname,String birthDate,String nationality,String lenguages)throws Exception{
+		//setDNI(dni);
 		this.name=name;
 		this.surname=surname;
-        this.idemployee=idemployee;
 		this.birthDate=birthDate;
 		this.nationality=nationality;
 		this.lenguages=lenguages;
-        this.company=company;
-
+		try{
+		this.idemployee=createid();
+		}catch(Exception e){
+			System.out.println(e);
+		}
+	}
+	
+	public void addCompany(AirCompany company){
+		this.company=company;
 	}
     // set de DNI que llama validDNI
-    public void setDNI(String dni)throws Exception{
+    /*public void setDNI(String dni)throws Exception{
         if(this.validDNI(dni)){
             this.dni=dni;
         }else{
@@ -43,7 +49,7 @@ import java.util.ArrayList;
        public String getDNI()throws Exception{
         return this.dni;
     }
-
+*/
     // Getters y Setters de todos los atributos
     public String getIdemployee() {
         return this.idemployee;
@@ -91,7 +97,7 @@ import java.util.ArrayList;
     public void setLenguages(String lenguages) {
         this.lenguages = lenguages;
     }
-    // Metodo que valida el DNI que se le pasa
+    /* Metodo que valida el DNI que se le pasa
 	public boolean validDNI(String dni){
         boolean valido=false;
         if(dni.length()==9){
@@ -120,13 +126,15 @@ import java.util.ArrayList;
         miLetra=asignacionLetra[resto];
 
         return miLetra;
-    }
+    }*/
      
-     abstract public double calculatetotalSalary();
+     abstract double calculatetotalSalary();
+	 abstract String createid();
      
     @Override
     public String toString(){
-        return "Su nombre es "+this.getName()+" "+this.getSurname()+ ", su fecha de nacimiento es "+this.getBirthDate()+ ", su nacionalidad es " +this.getNationality()+ " y habla "+this.getLenguages();
+        return "Su nombre es "+this.getName()+" "+this.getSurname()+", su fecha de nacimiento es "+this.getBirthDate()+ ", su nacionalidad es " +this.getNationality()+ 
+		" y habla "+this.getLenguages();
     }
 
 }

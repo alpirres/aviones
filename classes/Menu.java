@@ -16,7 +16,7 @@ public class Menu{
     /** Lista de las opciones del menú principal */
     List<String> menuprincipal;
     
-    AirCompany company;
+    private AirCompany company;
     
     Flight vuelo;
     
@@ -74,7 +74,7 @@ public class Menu{
                     entrada.nextLine();
                     this.imprimeMenu(company, this.vuelo);
                 }else{
-                    this.gestionPrincipal(opcion, company);
+					this.gestionPrincipal(opcion, company);
                 } 
             }catch(Exception e){
                 entrada=new Scanner(System.in);
@@ -92,6 +92,7 @@ public class Menu{
             case 1:
                 System.out.print("Porfavor introduzca el aeropuerto origen: ");
                 String origen=entrada.nextLine();
+				entrada.nextLine();
                 System.out.print("Porfavor introduzca el aeropuerto destino: ");
                 String destiny=entrada.nextLine();
                 this.createSubmenu(origen,destiny);
@@ -99,6 +100,7 @@ public class Menu{
             case 2:
                 System.out.print("Porfavor introduzca el identificador del billete: ");
                 String id=entrada.nextLine();
+				entrada.nextLine();
                 System.out.print("Porfavor introduzca su DNI: ");
                 String dni=entrada.nextLine();
                 company.searchTicket(id);
@@ -106,6 +108,7 @@ public class Menu{
             case 3:
                 System.out.print("Porfavor introduzca el identificador del billete: ");
                 String id1=entrada.nextLine();
+				entrada.nextLine();
                 System.out.print("Porfavor introduzca su DNI: ");
                 String dni1=entrada.nextLine();
                 company.removeTicket(id1);
@@ -116,19 +119,20 @@ public class Menu{
                 company.listFlight(destino);
                 break;
             case 5:
-                System.out.println("Aquí tiene todos los emppleados contratados");
-                company.listEmployee();
+                System.out.println("Aqui tiene todos los empleados contratados");
+                this.company.listEmployee();
+				System.out.println("no hace naaa");
                 break;
             case 6:
-                System.out.println("Aquí tiene todos los clientes registrados");
+                System.out.println("Aqui tiene todos los clientes registrados");
                 company.listClient();
                 break;
             case 7:
-                System.out.println("Aquí tiene todos los aviones disponibles");
+                System.out.println("Aqui tiene todos los aviones disponibles");
                 company.listPlane();
                 break;
             case 8:
-                System.out.println("Aquí tiene el sueldo total de cada empleado");
+                System.out.println("Aqui tiene el sueldo total de cada empleado");
                 company.totalSalary();
                 break;
             case 9:
@@ -145,7 +149,7 @@ public class Menu{
     *  
     */
     public void createSubmenu(String origen, String destino){
-        int contador=1;
+        Integer contador=new Integer(1);
         Hashtable<Integer,Flight> idFlight=new Hashtable<Integer,Flight>();
         Hashtable<Integer,String> listClient=new Hashtable<Integer,String>();
         while(!origen.equalsIgnoreCase(destino)){
@@ -157,10 +161,11 @@ public class Menu{
                     contador++;
                 }
             }
-            System.out.println("Seleccione el vuelo	deseado	o vuelva atrás (0).");
+            System.out.println("Seleccione el vuelo deseado o vuelva atras (0)");
             int id=entrada.nextInt();
+			Integer idInteger = new Integer(id);
             while(id!=0&&id<=contador){
-                listClient=idFlight.get(id).priceTicket();
+                listClient=idFlight.get(idInteger).priceTicket();
                 System.out.println("Seleccione el asiento deseado o vuelva atrás (0).");
                 int asiento=entrada.nextInt();
                 while(asiento!=0&&asiento<listClient.size()){

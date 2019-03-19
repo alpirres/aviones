@@ -16,20 +16,20 @@ public class Pilot extends Employee implements IPilot{
     
 	
 	//Constructor de la clase Pilot(Piloto)
-	public Pilot(String dni,String name,String surname,String birthDate,String nationality,String lenguages, AirCompany company)throws Exception{
-		super(dni,name,surname,birthDate,nationality,lenguages, createid(),company);
+	public Pilot(String name,String surname,String birthDate,String nationality,String lenguages)throws Exception{
+		super(name,surname,birthDate,nationality,lenguages);
         this.salary=SALARY_DEF;
         this.perAssignedFlight=PERASSIGNEDFLIGHT_DEF;
 	}
     
-	public static String createid(){
-        StringBuilder employee=new StringBuilder();
-        for (int i=0; i<company.code.length; i++){
-           	employee.append(company.code[i]);  
+	public String createid(){
+        StringBuilder emp=new StringBuilder();
+        for (int i=0; i<3; i++){
+           	emp.append(company.code[i]);  
        	}
        	String nemployee= String.format("%03d",num);
         num ++;
-        return employee.toString()+'P'+nemployee;
+        return emp.toString()+'P'+nemployee;
                
 	}
 	// Metodo que añade vuelos al array list

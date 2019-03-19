@@ -12,30 +12,43 @@ import java.util.Calendar;
 
 public class AirCompany implements IAirCompany{
 
-	protected String name;
+	protected String name="IBERIA";
 	protected char[] code=new char[3];
-	protected String ceo;
-	protected String fundationDate;
+	protected String ceo="Carlos Serrano";
+	protected String fundationDate="2002/03/05";
     protected Airplane planes;
-    protected Employee empleados;
+    protected Employee empleados=new Crew("Ana","Serrano","08/03/1982","Espaniola","Espaniol,Ingles");
     protected Flight vuelos;
     public ArrayList<Client> nClients=new ArrayList<Client>();
     
-
-	public AirCompany(String name,String ceo,String fundationDate,Airplane aviones,Employee nEmployee,Flight nFlight){
+	
+	private static AirCompany instance;
+	
+	private AirCompany()throws Exception{
 		this.name=name;
 		this.ceo=ceo;
 		this.fundationDate=fundationDate;
-        this.empleados=nEmployee;
-        this.planes=aviones;
-        this.vuelos=nFlight;
         createCode(name);
 	}
+	
+	public static AirCompany getInstance() throws Exception{
+        if(instance == null){
+            instance = new AirCompany();
+        }
+        return instance;
+    }
+	
+	public void addInformation(Airplane planes,Employee empleados,Flight vuelos ){
+		this.planes=planes;
+		//this.empleados=empleados;
+		this.vuelos=vuelos;
+	}
+	
     /**
     *  Funcion createCode la cual introduce en un array de char las 3 primeras letras de la compañia
     *  @param String name que es el nombre de la compañia
     */
-    public void createCode(String name){
+    public void createCode(String name)throws Exception{
         for(int i=0;i<this.code.length;i++){
             char letra=name.charAt(i);
             this.code[i]=Character.toUpperCase(letra);
@@ -66,11 +79,14 @@ public class AirCompany implements IAirCompany{
     */
     public boolean hireEmployee(Employee newemployee){
 		boolean hire=false;
-		for(int i=0;i<this.empleados.nEmployee.size()&&!hire;i++){
+		if(this.empleados.nEmployee!=null){
+			for(int i=0;i<this.empleados.nEmployee.size()&&!hire;i++){
 			if(!this.empleados.nEmployee.get(i).equals(newemployee)){
 				this.empleados.nEmployee.add(newemployee);
 				hire=true;
+				System.out.println("contrato");
 			}
+		}
 		}
 		return hire;
 	}
@@ -93,7 +109,7 @@ public class AirCompany implements IAirCompany{
 	}
 	// Metodo listEmployee que se encarga de listar todos los empleados
 	public void listEmployee(){
-			for(int i=0;i<this.empleados.nEmployee.size();i++) {
+		for(int i=0;i<this.empleados.nEmployee.size();i++) {
   			System.out.println(this.empleados.nEmployee.get(i));
 		}
 	}

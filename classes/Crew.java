@@ -16,22 +16,21 @@ public class Crew extends Employee implements ICrew{
 
     
 	//Constructor de la clase Crew(Tripulacion)
-	public Crew(String dni,String name,String surname,String birthDate,String nationality,String lenguages, AirCompany company)throws Exception{
-		super(dni,name,surname,birthDate,nationality,lenguages,createid(), company);
+	public Crew(String name,String surname,String birthDate,String nationality,String lenguages)throws Exception{
+		super(name,surname,birthDate,nationality,lenguages);
         this.salary=SALARY_DEF;
         this.perAssignedFlight=PERASSIGNEDFLIGHT_DEF;
-		
 	}
 	// Metodo que se encarga de crear un id al empleado con la union del codigo de la compañia y un numero para cada empleado
-	public static String createid(){
-		 StringBuilder employee=new StringBuilder();
-        	for (int i=0; i<company.code.length -1; i++){
-           	employee.append(company.code[i]);  
+	public String createid(){
+		StringBuilder employee=new StringBuilder();
+        	for (int i=0; i<company.code.length; i++){
+				employee.append(company.code[i]);  
        		}
-       		String nemployee= String.format("%03d",num);
-        	num ++;
-        	return employee.toString()+'C'+nemployee;
-               
+       	String nemployee= String.format("%03d",num);
+        num ++;
+		return employee.toString()+'C'+nemployee; 
+		
 	}
 	// Metodo que añade vuelos al array list
 	public void addFlight(Flight newAssignedFlight){
