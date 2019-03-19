@@ -17,10 +17,10 @@ public class AirCompany implements IAirCompany{
 	protected String ceo;
 	protected String fundationDate;
 	private static AirCompany instance;
-    public static ArrayList<Employee> nEmployee= new ArrayList<>();
+    	public static ArrayList<Employee> nEmployee= new ArrayList<>();
 	public static ArrayList<Airplane> nairplane = new ArrayList<>();
 	public static ArrayList<Flight> nFlight= new ArrayList<>();
-    public ArrayList<Client> nClients=new ArrayList<Client>();
+    	public ArrayList<Client> nClients=new ArrayList<Client>();
     
 
 	private AirCompany(String name,String ceo,String fundationDate){
